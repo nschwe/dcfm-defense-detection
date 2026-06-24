@@ -1,0 +1,38 @@
+[GPU] PyTorch not available, using CPU
+[worker] cwd: /home/schwe/ns3/Final_Project_NS3-master/strict_observable_v2
+[worker] Loading data...
+
+Preparing data from: ../simulations/features_static
+
+======================================================================
+Defense Detection Pipeline
+======================================================================
+
+[1/14] Loading data with TEMPORAL features...
+  Loaded 1841840 records from 40040 files
+
+[2/14] Preprocessing with temporal extraction...
+  Shape: (40040, 34)
+  Classes: {0: 20020, 1: 20020}
+
+[3/14] Engineering advanced features...
+  Created 141 features (from 34)
+  Split sizes: train=24024, val=8008, test=8008
+  Train class balance: {0: 12012, 1: 12012}
+
+[4/14] Intelligent feature selection...
+  Removed 95 highly correlated features (|r|>0.95), 25 remaining
+  Selected 25 features from 141
+  Features selected: 25
+
+[5/14] Aggressive data augmentation...
+  Augmented: 24024 → 24024 samples
+  SMOTE: 24024 -> 24024 samples
+[worker] X_train: (24024, 25), X_test: (8008, 25)
+[worker] Training SVM with C=1000000.0, gamma=1e-05, max_iter=500000
+[worker] Single fit took 15.4s, n_iter=500000 (max=500000)
+[worker] Converged: False
+[worker] Quick test accuracy (no CV): 0.7719
+[worker] Did not converge; skipping CV
+[worker] DONE in 17s total
+[worker] Result saved to results/hp_search_svm_c1e6/static/result_C1e+06_g1e-05.json

@@ -1,0 +1,9 @@
+Colab dataset bundle for DCFM defense-detection notebook
+============================================================
+
+wide_static.csv.gz  shape=(40040, 52)  3.9MB
+wide_mobile.csv.gz  shape=(40040, 52)  5.1MB
+support/topology_probes_static.csv
+support/topology_probes_mobile.csv
+support/run_status_static.csv
+support/run_status_mobile.csv

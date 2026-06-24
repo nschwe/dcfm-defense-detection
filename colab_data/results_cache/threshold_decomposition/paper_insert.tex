@@ -1,0 +1,227 @@
+% ============================================================================
+% PROPOSED LaTeX INSERTS — threshold-vs-ranking decomposition
+% Framing: grows out of the AUC/accuracy observation already stated in
+% Section VI-F (subsec:feature-size); presented as a planned mechanistic
+% analysis + an operational recipe, NOT as a rebuttal.
+% ============================================================================
+
+
+% ----------------------------------------------------------------------------
+% INSERT 0 — CONSISTENCY FIX in Section VI-F (subsec:feature-size).
+% REQUIRED if Insert 1 is added: otherwise VI-F frames threshold transfer as the
+% sole cause of the S->M collapse, contradicting the ~55/45 split shown later.
+%
+% In the paragraph beginning "\textsc{auc} values follow the same overall pattern
+% as accuracy.", REPLACE the sentence:
+%   "While \textsc{auc} remains relatively high even at larger values of $K$,
+%    accuracy in the \textsc{static}~$\rightarrow$~\textsc{mobile} direction
+%    degrades substantially, indicating that decision thresholds learned in one
+%    configuration do not transfer effectively to the other."
+% WITH:
+
+While \textsc{auc} remains relatively high even at larger values of $K$, accuracy
+in the \textsc{static}~$\rightarrow$~\textsc{mobile} direction degrades
+substantially, indicating that part of the gap reflects a decision threshold that
+does not transfer across configurations. Section~\ref{subsec:threshold-decomposition}
+quantifies this: threshold transfer accounts for roughly half of the degradation,
+while a comparable component persists even under an oracle threshold, reflecting a
+genuine loss of cross-domain separability.
+
+
+% ----------------------------------------------------------------------------
+% INSERT 0b — ABSTRACT (optional, softened; no numbers).
+% Append after the existing sentence:
+%   "Restricting the model to a compact invariant feature subset of four metrics
+%    yields near-symmetric cross-domain transfer ($\approx 0.86$ in both
+%    directions)."
+
+Analysis indicates that the cross-domain degradation arises from both reduced class
+separability and decision-threshold transfer, the latter being largely recoverable
+through lightweight target-domain recalibration.
+
+
+% ----------------------------------------------------------------------------
+% INSERT 1 — new Results subsection.
+% Place immediately AFTER \subsection{Feature Ablation and Augmentation ...}
+% (subsec:feature-ablation-and-augmentation), i.e. as the last subsection of
+% Section VI, just before \section{Discussion}.
+% ----------------------------------------------------------------------------
+
+\subsection{Threshold Transfer versus Feature Separability}
+\label{subsec:threshold-decomposition}
+
+The feature-size analysis (Section~\ref{subsec:feature-size}) observed that
+cross-domain \textsc{auc} remains high in regimes where accuracy collapses: at
+$K=33$ the \textsc{static}~$\rightarrow$~\textsc{mobile} \textsc{auc} is $0.8348$
+against an accuracy of $0.6718$, whereas \textsc{Universal-4} attains $0.8974$ and
+$0.8639$. Because \textsc{auc} is threshold-independent while accuracy is not, this
+divergence indicates that part of the accuracy gap reflects a decision threshold
+that does not transfer across configurations, rather than a loss of separability.
+We make this quantitative by decomposing the gap into a \emph{ranking} component,
+attributable to feature separability, and a \emph{threshold} component,
+attributable to calibration transfer.
+
+The decomposition is performed on identical model scores. For each direction and
+each $K\in\{4,33\}$ we use the pipeline of Section~\ref{subsec:feature-size}
+(\textsc{catboost}, group-aware split, source-validation threshold) and, over the
+same $20$ bootstrap seeds, hold a group-aware $40\%$ target fold out for
+evaluation. On this fold we vary \emph{only} the decision threshold across three
+regimes: (i) the operational \emph{source} threshold tuned on source validation;
+(ii) an \emph{oracle} threshold tuned on a disjoint target-calibration fold; and
+(iii) \emph{few-shot} recalibration, in which the threshold is tuned on a small
+number of labeled target runs. Writing $\mathrm{Acc}(K,\text{regime})$ for the
+target-fold accuracy, we define, per seed,
+\begin{align}
+\Delta_{\text{total}}     &= \mathrm{Acc}(4,\text{src}) - \mathrm{Acc}(33,\text{src}),\\
+\Delta_{\text{ranking}}   &= \mathrm{Acc}(4,\text{oracle}) - \mathrm{Acc}(33,\text{oracle}),\\
+\Delta_{\text{threshold}} &= \Delta_{\text{total}} - \Delta_{\text{ranking}},
+\end{align}
+so that $\Delta_{\text{ranking}}$ isolates the separability advantage that survives
+optimal thresholding and $\Delta_{\text{threshold}}$ captures the residual loss due
+to threshold transfer. Confidence intervals are paired across seeds and corroborated
+by a run-level cluster bootstrap.
+
+Table~\ref{tab:threshold-decomposition} reports the result. In the
+\textsc{static}~$\rightarrow$~\textsc{mobile} direction the $0.192$ gap separates
+into $\Delta_{\text{ranking}}=0.106\,[0.097,0.115]$ and
+$\Delta_{\text{threshold}}=0.086\,[0.078,0.094]$ (both $p<10^{-14}$). Roughly
+$55\%$ of the gap is a genuine separability advantage of \textsc{Universal-4}---and,
+notably, it is \emph{larger} than the $0.063$ \textsc{auc} gap, indicating that the
+compact subset improves accuracy at the operating point beyond what the ranking
+summary alone reflects. The remaining $\approx 45\%$ is a calibration effect:
+re-tuning the threshold alone, without altering a single feature, raises the
+$33$-feature detector from $0.672$ to $0.759$. The achievable (calibration-fold)
+oracle equals the in-fold optimum to four decimals, so this is a genuine
+operating-point limit rather than an estimation artifact. The
+\textsc{mobile}~$\rightarrow$~\textsc{static} direction, which does not collapse,
+shows a negligible threshold component ($0.003$), confirming that the calibration
+effect is specific to the asymmetric \textsc{static}~$\rightarrow$~\textsc{mobile}
+transfer.
+
+The mechanism is a shift in the score distribution under mobility. For $K=33$ the
+\textsc{static}~$\rightarrow$~\textsc{mobile} accuracy-optimal threshold moves by
+$0.36$ between domains (logit-space Wasserstein distance $1.28$ between the
+source-test and target-test score distributions), so a single source-tuned
+threshold lands far from the target optimum even though the ranking is largely
+preserved. For \textsc{Universal-4} the same shift is only $0.06$ (Wasserstein
+$0.61$): its score distribution is domain-stable, so its threshold transfers
+unchanged. The defense signal is therefore not lost under the full feature set;
+it is mis-located.
+
+This decomposition also yields a practical recalibration recipe and, at the same
+time, sharpens the separability claim. Because the threshold component is
+recoverable from target labels alone, tuning only the threshold on $25$ labeled
+target runs raises $33$-feature \textsc{static}~$\rightarrow$~\textsc{mobile}
+accuracy from $0.672$ to $0.746$, with $500$ runs reaching the $0.759$ oracle and
+isotonic recalibration ($n\geq250$) attaining $0.779$. Crucially, even after the
+threshold has been fully corrected the recalibrated $33$-feature detector plateaus
+near its oracle and remains about $0.105$ below \textsc{Universal-4} ($0.864$)---a
+residual that coincides with $\Delta_{\text{ranking}}$. Threshold recalibration
+therefore cannot close the gap on its own: \textsc{Universal-4} is not merely
+better calibrated but genuinely more separable under domain shift, and it reaches
+this operating point with no target labels at all.
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Decomposition of the cross-domain accuracy gap between
+\textsc{Universal-4} ($K{=}4$) and the full feature set ($K{=}33$) into a
+feature-separability (ranking) component and a threshold-transfer (calibration)
+component. All quantities use identical model scores over the same $20$ bootstrap
+seeds; only the decision threshold differs across regimes. Operating-point
+accuracies are mean~$\pm$~std; gap components are mean~[$95\%$~CI].}
+\label{tab:threshold-decomposition}
+\begin{tabular}{lcc}
+\toprule
+ & S$\rightarrow$M & M$\rightarrow$S \\
+\midrule
+\multicolumn{3}{l}{\textit{Operating-point accuracy, $K=33$}}\\
+\quad Source threshold & $0.6716 \pm 0.0179$ & $0.8419 \pm 0.0042$ \\
+\quad Oracle threshold & $0.7588 \pm 0.0208$ & $0.8453 \pm 0.0035$ \\
+\midrule
+\multicolumn{3}{l}{\textit{Operating-point accuracy, $K=4$ (\textsc{Universal-4})}}\\
+\quad Source threshold & $0.8638 \pm 0.0046$ & $0.8584 \pm 0.0029$ \\
+\quad Oracle threshold & $0.8648 \pm 0.0040$ & $0.8590 \pm 0.0030$ \\
+\midrule
+\multicolumn{3}{l}{\textit{Gap decomposition ($K{=}4$ minus $K{=}33$)}}\\
+\quad $\Delta_{\text{total}}$ (source thr.)   & $0.192\,[0.184,0.201]$ & $0.016\,[0.014,0.018]$ \\
+\quad $\Delta_{\text{ranking}}$ (oracle thr.) & $0.106\,[0.097,0.115]$ & $0.014\,[0.012,0.015]$ \\
+\quad $\Delta_{\text{threshold}}$ (residual)  & $0.086\,[0.078,0.094]$ & $0.003\,[0.001,0.004]$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+% ----------------------------------------------------------------------------
+% INSERT 2 — revise the over-attributing sentence in
+% \subsection{Feature Invariance as the Determinant of Generalization}
+% (subsec:invariance).
+%
+% (Optional) retitle to:
+%   \subsection{Feature Invariance and Score-Distribution Stability as
+%   Determinants of Generalization}
+% ----------------------------------------------------------------------------
+
+% REPLACE the final sentence of the first paragraph of subsec:invariance
+% ("...and exceeds the full feature set by roughly $0.19$ absolute accuracy on
+%  S$\rightarrow$M.") WITH:
+
+and exceeds the full feature set by $0.192$ absolute accuracy on
+S$\rightarrow$M. As shown in Section~\ref{subsec:threshold-decomposition}, this
+$0.192$ gap is not a single effect: about $0.106$ is a genuine separability
+advantage that persists under an oracle decision threshold (and exceeds the
+$0.063$ \textsc{auc} gap), while about $0.086$ is a calibration effect---the
+source-tuned threshold fails to transfer because the full-feature score
+distribution drifts under mobility, whereas the \textsc{Universal-4} distribution
+does not.
+
+% REPLACE the closing principle paragraph of subsec:invariance
+% ("The principle that emerges is straightforward. Cross-domain robustness ...
+%  Features with weaker but more stable univariate separability generalize.")
+% WITH:
+
+The principle that emerges is straightforward, and it operates through two
+complementary channels. Cross-domain robustness in this setting is governed by
+feature invariance rather than by univariate discriminative strength in the source
+domain: strong but configuration-dependent features, most prominently the delay-
+and jitter-based metrics, fail to transfer, while features with weaker but more
+stable univariate separability generalize. Invariance acts first by preserving the
+\emph{ranking} of samples across domains, and second---previously implicit in the
+high cross-domain \textsc{auc}---by preserving the \emph{location} of the score
+distribution, so that a single decision threshold remains valid across
+configurations. The full feature set satisfies the first property only partially
+and the second hardly at all (its \textsc{static}~$\rightarrow$~\textsc{mobile}
+optimal threshold shifts by $0.36$, versus $0.06$ for \textsc{Universal-4}); the
+compact invariant subset satisfies both. Selecting invariant features therefore
+yields not only separable but also \emph{calibrated} cross-domain decisions, which
+is what allows \textsc{Universal-4} to transfer without any target-domain
+recalibration.
+
+
+% ----------------------------------------------------------------------------
+% INSERT 3 (optional, subtle) — Conclusion.
+% Append to the paragraph that introduces Universal-4's near-symmetric transfer
+% ("...near-symmetric transfer in both directions ... at a minor cost in
+%  source-domain accuracy.")
+% ----------------------------------------------------------------------------
+
+A decomposition of this gap on identical scores
+(Section~\ref{subsec:threshold-decomposition}) attributes roughly $55\%$ of the
+$K=33$ \textsc{static}~$\rightarrow$~\textsc{mobile} shortfall to feature
+separability and the remainder to a decision threshold that does not transfer
+across domains. The calibration component is recoverable---as few as $25$ labeled
+target runs recover most of it---whereas the separability component is not: even
+under an oracle threshold the full feature set remains well below
+\textsc{Universal-4}. The compact invariant subset avoids both effects
+simultaneously, transferring without any target-domain recalibration because it is
+both more separable and better calibrated across configurations.
+
+% ============================================================================
+% Optional figures (already generated):
+%   results/threshold_decomposition/fig_score_drift.{png,pdf}
+%       -> 2x2 score-distribution histograms with t*_src / t*_tgt marked.
+%   results/threshold_decomposition/fig_fewshot_recalibration.{png,pdf}
+%       -> accuracy vs. number of labeled target runs.
+% Either can be added to Section VI-H if a visual is desired; the text above is
+% self-contained without them.
+% ============================================================================

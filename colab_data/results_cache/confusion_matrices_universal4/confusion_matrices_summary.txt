@@ -1,0 +1,44 @@
+======================================================================
+Confusion Matrices — Universal-4 Feature Set (CatBoost)
+======================================================================
+
+Features (4):
+  - AverageAdvertisedLinksPerTCMessage
+  - AverageMprCount
+  - DataPacketRate
+  - FlowThroughputStd
+
+Classifier: CatBoostClassifier (tuned hyperparameters)
+  Static params: {'subsample': 0.8, 'learning_rate': 0.05, 'l2_leaf_reg': 3, 'iterations': 500, 'depth': 7}
+  Mobile params: {'subsample': 1.0, 'learning_rate': 0.05, 'l2_leaf_reg': 10, 'iterations': 1000, 'depth': 4}
+N seeds: 20
+
+Setting                               Accuracy                  AUC
+----------------------------------------------------------------------
+static_in_domain          0.8804 +/- 0.0012  0.9458 +/- 0.0003
+static_to_mobile          0.8639 +/- 0.0040  0.8974 +/- 0.0027
+mobile_in_domain          0.9007 +/- 0.0011  0.9539 +/- 0.0007
+mobile_to_static          0.8589 +/- 0.0014  0.9199 +/- 0.0009
+
+
+Confusion matrix tables:
+
+--- static_in_domain (acc=0.8804, n=40000) ---
+                pred_OFF      pred_ON
+true_OFF       19125 ( 47.8%)      875 (  2.2%)
+true_ON         3908 (  9.8%)    16092 ( 40.2%)
+
+--- static_to_mobile (acc=0.8639, n=40000) ---
+                pred_OFF      pred_ON
+true_OFF       19216 ( 48.0%)      784 (  2.0%)
+true_ON         4661 ( 11.7%)    15339 ( 38.3%)
+
+--- mobile_in_domain (acc=0.9007, n=40000) ---
+                pred_OFF      pred_ON
+true_OFF       19335 ( 48.3%)      665 (  1.7%)
+true_ON         3306 (  8.3%)    16694 ( 41.7%)
+
+--- mobile_to_static (acc=0.8589, n=40000) ---
+                pred_OFF      pred_ON
+true_OFF       18654 ( 46.6%)     1346 (  3.4%)
+true_ON         4300 ( 10.8%)    15700 ( 39.2%)

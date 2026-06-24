@@ -1,0 +1,30 @@
+{
+  "selected": [
+    "log1p_FlowThroughputStd",
+    "QoS_Score",
+    "FlowThroughputStd",
+    "AverageAdvertisedLinksPerTCMessage",
+    "interact_Throughput_AverageEndToEndDelay",
+    "Jitter_Delay_Ratio",
+    "ratio_AverageEndToEndDelay_AverageJitter",
+    "AverageJitter",
+    "AverageEndToEndDelay",
+    "TcMessageRate",
+    "DataPacketRate",
+    "RoutingOverheadBytesRatio",
+    "row_cv",
+    "sqrt_FlowDelayStd",
+    "AvgTxPacketsPerFlow",
+    "FlowCount",
+    "FlowDelayStd",
+    "row_skew",
+    "Overhead_Per_Hop",
+    "FlowDurationStd",
+    "AverageHopCount",
+    "ratio_Throughput_AverageEndToEndDelay",
+    "AvgFlowDuration",
+    "row_q75",
+    "FlowLossRateStd"
+  ],
+  "n_selected": 25
+}

@@ -1,0 +1,28 @@
+FlowThroughputStd analysis (Kiril note 1)
+============================================================
+
+ANALYSIS A: Universal-3 vs Universal-4 cross-domain
+direction  U4_mean   U4_std  U3_mean   U3_std  delta_U4_minus_U3  paired_t      p_value  paired_cohens_d
+     S->M 0.862304 0.004284 0.861070 0.007588           0.001234  0.660802 5.166721e-01         0.147760
+     M->S 0.858352 0.001060 0.831853 0.002862           0.026499 37.781800 2.424841e-19         8.448267
+in-static 0.865872 0.003705 0.844231 0.003550           0.021641 42.840844 2.286857e-20         9.579504
+in-mobile 0.895892 0.004097 0.886988 0.003924           0.008904 16.652650 8.637615e-13         3.723646
+
+ANALYSIS B: drop-column importance within Universal-4
+config                    dropped_feature  mean_acc_drop  std_acc_drop    t_stat      p_value
+static AverageAdvertisedLinksPerTCMessage       0.022946      0.002596 38.522797 1.684156e-19
+static                    AverageMprCount       0.010639      0.002628 17.645507 3.063298e-13
+static                  DataPacketRate       0.006419      0.002297 12.182248 2.007726e-10
+static                  FlowThroughputStd       0.021641      0.002202 42.840844 2.286857e-20
+mobile AverageAdvertisedLinksPerTCMessage       0.020536      0.002380 37.610522 2.640612e-19
+mobile                    AverageMprCount       0.006019      0.002422 10.834161 1.426249e-09
+mobile                  DataPacketRate       0.023364      0.002640 38.578938 1.638740e-19
+mobile                  FlowThroughputStd       0.008904      0.002331 16.652650 8.637615e-13
+
+Interpretation key:
+  - If U4 > U3 in cross-domain (positive delta, p<0.05), the
+    feature contributes to transfer despite univariate collapse.
+  - In Analysis B, a non-trivial drop-column contribution for
+    FlowThroughputStd in BOTH configs (especially mobile, where
+    its univariate d=0.0364) is the direct evidence that its
+    value comes from interactions, not univariate separation.

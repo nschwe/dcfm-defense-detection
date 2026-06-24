@@ -1,0 +1,15 @@
+{
+  "C": 1000000.0,
+  "gamma": 1e-05,
+  "status": "did_not_converge",
+  "timestamp": 1778199451.4013455,
+  "max_iter": 500000,
+  "prepare_data_seconds": 227.48887515068054,
+  "n_features": 25,
+  "n_train": 24024,
+  "n_test": 8008,
+  "single_fit_seconds": 15.35606598854065,
+  "n_iter": 500000,
+  "converged": false,
+  "quick_test_accuracy": 0.7718531468531469
+}

@@ -1,0 +1,28 @@
+======================================================================
+Stacking_Ensemble REBUILD SUMMARY — mobile
+======================================================================
+
+Source pkls:
+  Extended: results/hp_search_extended/mobile/best_models.pkl
+  Focused:  results/hp_search_focused/mobile/best_models.pkl
+
+Number of base learners (with predict_proba): 11
+
+Base learners used:
+  - logisticregression
+  - extratrees
+  - lightgbm
+  - xgboost
+  - bagging_rf
+  - adaboost
+  - gradientboosting
+  - catboost
+  - randomforest
+  - svm
+  - bagging_et
+
+Test accuracy: 0.9095
+Test AUC:      0.9594
+Test F1:       0.9051
+95% CI:        [0.9032, 0.9158]
+Build time:    542.7s

@@ -1,0 +1,23 @@
+======================================================================
+Universal Feature Set K — sensitivity summary
+======================================================================
+  bootstrap seeds: 20
+  stability threshold (primary): 0.8
+  K range: 1..33
+
+Recommended K per (importance method, variant):
+
+  method          variant    K   acc_avg    acc_SM    acc_MS    asym
+  ----------------------------------------------------------------
+  catboost_pvc    soft       2    0.8080    0.8201    0.7960  0.0243
+  catboost_pvc    strict     9    0.8602    0.8620    0.8584  0.0055
+  perm_catboost   soft       2    0.8159    0.8201    0.7960  0.0243
+  perm_catboost   strict     3    0.8101    0.8123    0.8026  0.0117
+  perm_rf         soft       2    0.8159    0.8056    0.8175  0.0129
+  perm_rf         strict    12    0.8262    0.8099    0.8375  0.0276
+  perm_xgb        soft       1    0.8101    0.8123    0.8026  0.0117
+  perm_xgb        strict     3    0.8101    0.8123    0.8026  0.0117
+  rf_native       soft       6    0.8458    0.8443    0.8407  0.0128
+  rf_native       strict     8    0.8506    0.8457    0.8438  0.0119
+  xgb_gain        soft       4    0.8224    0.8184    0.8169  0.0153
+  xgb_gain        strict    14    0.8336    0.8235    0.8437  0.0215

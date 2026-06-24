@@ -1,0 +1,1 @@
+[static] svm (grid=focused) best params at edge: C=100000 (range [0.1, 1, 10, 100, 1000, 10000, 100000])

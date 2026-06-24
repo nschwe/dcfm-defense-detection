@@ -1,0 +1,12 @@
+# Aggregated over 20 seeds
+# Accuracy: 0.9007 +/- 0.0011
+# AUC: 0.9539 +/- 0.0007
+# Total samples (sum of seeds): 40000
+,pred_0,pred_1
+true_0,19335,665
+true_1,3306,16694
+
+# Percentages
+,pred_0,pred_1
+true_0,48.34%,1.66%
+true_1,8.27%,41.73%

@@ -1,0 +1,16 @@
+% Cluster-aware bootstrap CIs (2000 resamples at run level).
+% Accuracy intervals are 95% percentile CIs over the bootstrap distribution.
+\begin{tabular}{lcccc}
+\toprule
+Model & Static Acc. & Mobile Acc. & Static AUC & Mobile AUC \\
+\midrule
+Stacking Ensemble & 0.8874 [0.880, 0.895] & 0.9095 [0.902, 0.917] & 0.9454 & 0.9594 \\
+\textsc{XGBoost} & 0.8842 [0.876, 0.892] & 0.9082 [0.901, 0.915] & 0.9434 & 0.9599 \\
+\textsc{CatBoost} & 0.8859 [0.878, 0.894] & 0.9072 [0.900, 0.914] & 0.9462 & 0.9595 \\
+Random Forest & 0.8830 [0.875, 0.891] & 0.9063 [0.899, 0.913] & 0.9433 & 0.9567 \\
+AdaBoost & 0.8776 [0.870, 0.886] & 0.9030 [0.896, 0.910] & 0.9417 & 0.9528 \\
+Logistic Regression & 0.8681 [0.860, 0.877] & 0.5473 [0.537, 0.558] & 0.9326 & 0.5701 \\
+Ridge & 0.8631 [0.855, 0.872] & 0.8932 [0.886, 0.901] & 0.9271 & 0.9437 \\
+SVM (RBF) & 0.8785 [0.870, 0.887] & 0.8658 [0.857, 0.874] & 0.9317 & 0.8970 \\
+\bottomrule
+\end{tabular}

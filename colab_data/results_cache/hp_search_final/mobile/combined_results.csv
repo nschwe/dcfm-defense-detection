@@ -1,0 +1,2 @@
+model,cv_accuracy,test_accuracy,test_ci_low,test_ci_high,test_auc,test_f1,elapsed_s,best_params,edge_warnings,grid_mode
+Stacking_Ensemble,,0.9094655344655345,0.9031806958105626,0.9157503731205063,0.9594149606637119,0.9051419599633652,542.6825749874115,"{""meta"": ""L2-LR C=1.0"", ""n_bases"": 11}",,post-tuning-rebuild-with-focused-svm

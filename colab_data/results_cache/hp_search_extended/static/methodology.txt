@@ -1,0 +1,51 @@
+Unified Hyperparameter Search Methodology
+==========================================
+
+This document records the methodology used by unified_hp_search.py.
+
+1. Pipeline alignment
+   The data pipeline is reused verbatim from defense_detection.py
+   (DefenseDetector class): load tall CSV -> preprocess -> engineer features
+   -> 60/20/20 GroupShuffleSplit at the run level (random_state=42) ->
+   RobustScaler fitted on train only -> intelligent feature selection ->
+   SMOTE/Borderline-SMOTE/SVM-SMOTE augmentation. Tuning therefore evaluates
+   exactly the same training distribution as Tables III/IV.
+
+2. Search procedure
+   - RandomizedSearchCV with n_iter = 30 is used for tree-based and boosting
+     models. n_iter is set to min(30, total combinations); we therefore never
+     waste iterations on a smaller grid.
+   - GridSearchCV is used for Logistic Regression, Ridge, and SVM, whose
+     grids are small enough to enumerate exhaustively.
+   - All searches use 3-fold StratifiedKFold (Bergstra & Bengio 2012;
+     standard for moderate sample sizes), accuracy as the scoring criterion
+     (matching Table IV's primary metric), and refit on the full training
+     partition.
+
+3. Search-space variants
+   - 'narrow' grids match the original hp_search.py and standard practice.
+   - 'extended' grids widen ranges where boundary best params have been
+     observed (matching svm_extended.py).
+   - 'focused' is an SVM-only high-C grid (matching svm_focused.py).
+   The script automatically detects when best params land at the numeric
+   boundary of a 'narrow' grid and emits warnings to edge_warnings.txt,
+   prompting an 'extended'-mode follow-up if needed.
+
+4. Stacking
+   Stacking_Ensemble is constructed AFTER all base learners are tuned. Base
+   learners are the tuned models that expose predict_proba. The meta-learner
+   is L2-regularized Logistic Regression (C=1.0). Five-fold cross-validation
+   produces out-of-fold predictions to avoid information leakage, matching
+   Section V-D of the paper.
+
+5. Reporting
+   For each model: best params, mean CV accuracy, and held-out test accuracy
+   with 95% Wilson confidence intervals (n_test approx 8,008). Test set is
+   never touched during search.
+
+References
+----------
+- Bergstra & Bengio (2012) Random Search for Hyper-Parameter Optimization.
+- Probst, Boulesteix & Bischl (2019) Tunability: Importance of Hyperparameters
+  of Machine Learning Algorithms.
+- Wolpert (1992) Stacked generalization.

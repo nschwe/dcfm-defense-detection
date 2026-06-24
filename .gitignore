@@ -1,0 +1,32 @@
+# ===================================================================
+# Heavy / regenerated artifacts — do NOT commit.
+# The compact, git-shippable copies live in colab_data/ instead.
+# ===================================================================
+
+# 18.7 GB of fitted ensembles + intermediate outputs (the notebook uses
+# colab_data/results_cache/ instead of this folder).
+/results/
+/results_backup_*/
+
+# Raw simulation data lives one level up and is never committed.
+/simulations/
+
+# Python / library scratch
+__pycache__/
+*.pyc
+catboost_info/
+*.log
+
+# Editor / AI-tool config (not part of the research artifact)
+.claude/
+.vscode/
+.idea/
+
+# Diagnostic temp dirs created by some scripts
+_inspect_tmp_*/
+_verify_tmp_*/
+
+# ===================================================================
+# KEEP (do not ignore): colab_data/  *.py  *.ipynb  *.md
+# colab_data/ is the 39 MB bundle the Colab notebook needs.
+# ===================================================================

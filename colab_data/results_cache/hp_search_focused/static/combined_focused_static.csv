@@ -1,0 +1,2 @@
+model,cv_accuracy,test_accuracy,test_ci_low,test_ci_high,test_auc,test_f1,elapsed_s,best_params,edge_warnings,grid_mode
+svm,0.8809940059940059,0.877997002997003,0.8706467254526937,0.8849847887799391,0.9316721615048289,0.8670567424139338,5721.876709461212,"{""C"": 100000, ""gamma"": 0.0001}","C=100000 (range [0.1, 1, 10, 100, 1000, 10000, 100000])",focused
