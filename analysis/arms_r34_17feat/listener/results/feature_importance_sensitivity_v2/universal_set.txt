@@ -1,0 +1,4 @@
+AverageAdvertisedLinksPerTCMessage
+AverageHopCount
+AverageMprCount
+TcMessageRate

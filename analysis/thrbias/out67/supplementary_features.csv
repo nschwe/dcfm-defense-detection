@@ -1,0 +1,68 @@
+feature,kind,formula,description,constant,survives_variance_correlation_filters_static,survives_variance_correlation_filters_mobile
+TcMessageRate,base,base observable,measured directly by the single vantage point,False,True,True
+AverageAdvertisedLinksPerTCMessage,base,base observable,measured directly by the single vantage point,False,True,True
+MidMessageRate,base,base observable,measured directly by the single vantage point,True,False,False
+HnaMessageRate,base,base observable,measured directly by the single vantage point,True,False,False
+RoutingOverheadBytesRatio,base,base observable,measured directly by the single vantage point,False,True,True
+AverageMprCount,base,base observable,measured directly by the single vantage point,False,True,True
+AverageHopCount,base,base observable,measured directly by the single vantage point,False,True,True
+DataPacketRate,base,base observable,measured directly by the single vantage point,False,True,True
+Throughput,base,base observable,measured directly by the single vantage point,False,True,True
+NormalizedRoutingLoad,base,base observable,measured directly by the single vantage point,False,True,True
+AvgTxPacketSize,base,base observable,measured directly by the single vantage point,False,True,True
+AvgFlowThroughput,base,base observable,measured directly by the single vantage point,False,True,True
+FlowThroughputStd,base,base observable,measured directly by the single vantage point,False,True,True
+AvgFlowDuration,base,base observable,measured directly by the single vantage point,False,True,True
+FlowDurationStd,base,base observable,measured directly by the single vantage point,False,True,True
+AvgTxBytesPerFlow,base,base observable,measured directly by the single vantage point,False,False,False
+AvgTxPacketsPerFlow,base,base observable,measured directly by the single vantage point,False,True,True
+TDR,network-performance indicator,TcMessageRate * AverageAdvertisedLinksPerTCMessage,topology dissemination rate,False,True,True
+Total_Traffic,network-performance indicator,TcMessageRate + MidMessageRate + HnaMessageRate + DataPacketRate,summed message rates,False,True,True
+log1p_TcMessageRate,statistical: log1p,log(1 + TcMessageRate),log transform,False,False,False
+sqrt_TcMessageRate,statistical: sqrt,sqrt(TcMessageRate + eps),square-root transform,False,False,False
+log1p_AverageAdvertisedLinksPerTCMessage,statistical: log1p,log(1 + AverageAdvertisedLinksPerTCMessage),log transform,False,False,False
+sqrt_AverageAdvertisedLinksPerTCMessage,statistical: sqrt,sqrt(AverageAdvertisedLinksPerTCMessage + eps),square-root transform,False,False,False
+log1p_MidMessageRate,statistical: log1p,log(1 + MidMessageRate),log transform,True,False,False
+sqrt_MidMessageRate,statistical: sqrt,sqrt(MidMessageRate + eps),square-root transform,True,False,False
+log1p_HnaMessageRate,statistical: log1p,log(1 + HnaMessageRate),log transform,True,False,False
+sqrt_HnaMessageRate,statistical: sqrt,sqrt(HnaMessageRate + eps),square-root transform,True,False,False
+log1p_RoutingOverheadBytesRatio,statistical: log1p,log(1 + RoutingOverheadBytesRatio),log transform,False,False,False
+sqrt_RoutingOverheadBytesRatio,statistical: sqrt,sqrt(RoutingOverheadBytesRatio + eps),square-root transform,False,False,False
+log1p_AverageMprCount,statistical: log1p,log(1 + AverageMprCount),log transform,False,False,False
+sqrt_AverageMprCount,statistical: sqrt,sqrt(AverageMprCount + eps),square-root transform,False,False,False
+log1p_AverageHopCount,statistical: log1p,log(1 + AverageHopCount),log transform,False,False,False
+sqrt_AverageHopCount,statistical: sqrt,sqrt(AverageHopCount + eps),square-root transform,False,False,False
+log1p_DataPacketRate,statistical: log1p,log(1 + DataPacketRate),log transform,False,False,False
+sqrt_DataPacketRate,statistical: sqrt,sqrt(DataPacketRate + eps),square-root transform,False,False,False
+log1p_Throughput,statistical: log1p,log(1 + Throughput),log transform,False,True,True
+sqrt_Throughput,statistical: sqrt,sqrt(Throughput + eps),square-root transform,False,False,False
+log1p_NormalizedRoutingLoad,statistical: log1p,log(1 + NormalizedRoutingLoad),log transform,False,True,True
+sqrt_NormalizedRoutingLoad,statistical: sqrt,sqrt(NormalizedRoutingLoad + eps),square-root transform,False,False,True
+log1p_AvgTxPacketSize,statistical: log1p,log(1 + AvgTxPacketSize),log transform,False,False,True
+sqrt_AvgTxPacketSize,statistical: sqrt,sqrt(AvgTxPacketSize + eps),square-root transform,False,False,False
+log1p_AvgFlowThroughput,statistical: log1p,log(1 + AvgFlowThroughput),log transform,False,False,True
+sqrt_AvgFlowThroughput,statistical: sqrt,sqrt(AvgFlowThroughput + eps),square-root transform,False,False,False
+log1p_FlowThroughputStd,statistical: log1p,log(1 + FlowThroughputStd),log transform,False,True,True
+sqrt_FlowThroughputStd,statistical: sqrt,sqrt(FlowThroughputStd + eps),square-root transform,False,True,True
+log1p_AvgFlowDuration,statistical: log1p,log(1 + AvgFlowDuration),log transform,False,False,True
+sqrt_AvgFlowDuration,statistical: sqrt,sqrt(AvgFlowDuration + eps),square-root transform,False,False,False
+log1p_FlowDurationStd,statistical: log1p,log(1 + FlowDurationStd),log transform,False,False,False
+sqrt_FlowDurationStd,statistical: sqrt,sqrt(FlowDurationStd + eps),square-root transform,False,False,False
+log1p_AvgTxBytesPerFlow,statistical: log1p,log(1 + AvgTxBytesPerFlow),log transform,False,False,False
+sqrt_AvgTxBytesPerFlow,statistical: sqrt,sqrt(AvgTxBytesPerFlow + eps),square-root transform,False,False,False
+log1p_AvgTxPacketsPerFlow,statistical: log1p,log(1 + AvgTxPacketsPerFlow),log transform,False,False,True
+sqrt_AvgTxPacketsPerFlow,statistical: sqrt,sqrt(AvgTxPacketsPerFlow + eps),square-root transform,False,False,False
+Throughput_squared,statistical: power,Throughput ** 2,power transform,False,True,True
+Throughput_cubed,statistical: power,Throughput ** 3,power transform,False,True,True
+row_mean,statistical: row-wise,mean over the base metrics of the window,row-wise statistic across the base metrics,False,True,False
+row_std,statistical: row-wise,standard deviation over the base metrics,row-wise statistic across the base metrics,False,False,False
+row_median,statistical: row-wise,median over the base metrics,row-wise statistic across the base metrics,False,True,True
+row_max,statistical: row-wise,maximum over the base metrics,row-wise statistic across the base metrics,False,False,False
+row_min,statistical: row-wise,minimum over the base metrics,row-wise statistic across the base metrics,True,False,False
+row_range,statistical: row-wise,row_max - row_min,row-wise statistic across the base metrics,False,False,False
+row_cv,statistical: row-wise,row_std / (row_mean + eps),row-wise statistic across the base metrics,False,True,True
+row_skew,statistical: row-wise,skewness over the base metrics,row-wise statistic across the base metrics,False,True,True
+row_kurtosis,statistical: row-wise,kurtosis over the base metrics,row-wise statistic across the base metrics,False,False,False
+row_q25,statistical: row-wise,25th percentile over the base metrics,row-wise statistic across the base metrics,False,True,True
+row_q75,statistical: row-wise,75th percentile over the base metrics,row-wise statistic across the base metrics,False,True,True
+row_iqr,statistical: row-wise,row_q75 - row_q25,row-wise statistic across the base metrics,False,False,False

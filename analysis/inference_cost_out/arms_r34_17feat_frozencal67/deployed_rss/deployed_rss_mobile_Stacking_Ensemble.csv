@@ -1,0 +1,2 @@
+rss_before_load_mb,rss_after_load_mb,rss_delta_mb,rss_during_inference_mb,ru_maxrss_inherited_mb,load_s,median_ms_per_window,n_features,n_calls,mode,model,artefact_mb
+72.83203125,1517.203125,1444.37109375,1527.48046875,1662.1171875,1.4043457440566272,174.8171235085465,32,100,mobile,Stacking_Ensemble,623.2720899581909
